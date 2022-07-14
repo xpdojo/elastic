@@ -6,3 +6,9 @@ elasticsearch:
 spring:
   elasticsearch:
     connection-timeout: 2s
+
+logging:
+  level:
+    root: info
+    org:
+      elasticsearch: debug
