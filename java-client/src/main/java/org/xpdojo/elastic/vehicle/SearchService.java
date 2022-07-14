@@ -20,11 +20,13 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
-import org.xpdojo.elastic.vehicle.model.Code;
-import org.xpdojo.elastic.vehicle.model.CodeSet;
+import org.xpdojo.elastic.vehicle.model.Field;
+import org.xpdojo.elastic.vehicle.model.Result;
+import org.xpdojo.elastic.vehicle.model.ResultSet;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -40,83 +42,48 @@ public class SearchService {
     @Value("${elasticsearch.index}")
     private String INDEX;
 
-    private final String MAKER_CODE = "PC0008";
-    private final String MAKER_FIELD = "make_cd";
-    private final String SUB_MODEL_CODE = "PC0294";
-    private final String SUB_MODEL_FIELD = "model_cd";
-    // private final String MODEL_CODE = "PC0294";
-    // private final String MODEL_FIELD = "dtl_model_cd";
-
-    private final String LOCATION_CODE = "PC0003";
-    private final String LOCATION_FIELD = "location_cd";
-    private final String CONDITION_CODE = "PC0006";
-    private final String CONDITION_FIELD = "type_cd";
-    private final String VEHICLE_TYPE_CODE = "PC0007";
-    private final String VEHICLE_TYPE_FIELD = "vehicle_type";
-    private final String STEERING_CODE = "PC0009";
-    private final String STEERING_FIELD = "steering_cd";
-    private final String TRANSMISSION_CODE = "PC0010";
-    private final String TRANSMISSION_FIELD = "transmission_cd";
-    private final String DRIVETRAIN_CODE = "PC0011";
-    private final String DRIVETRAIN_FIELD = "drivetrain_cd";
-    private final String FUEL_CODE = "PC0012";
-    private final String FUEL_FIELD = "fuel_type_cd";
-    private final String COLOR_CODE = "PC0015";
-    private final String COLOR_FIELD = "exterior_color_cd";
-
-    // private final String OPTION_CODE = "PC0021";
-    // private final String OPTION_FIELD = "option_cd";
-    private final String PASSENGER_CODE = "passenger";
-    private final String PASSENGER_FIELD = "passenger";
-
-    public CodeSet search() throws IOException {
+    public ResultSet search() throws IOException {
 
         Request request = new Request(HttpMethod.GET.name(), "/");
         request.addParameter("pretty", "true");
 
-        MultiSearchRequest multiSearchRequest = new MultiSearchRequest();
-        SearchRequest searchRequestMaker = getSearchRequest(INDEX, MAKER_CODE, MAKER_FIELD);
-        multiSearchRequest.add(searchRequestMaker);
-        SearchRequest searchRequestSubModel = getSearchRequest(INDEX, SUB_MODEL_CODE, SUB_MODEL_FIELD);
-        multiSearchRequest.add(searchRequestSubModel);
-        SearchRequest searchRequestSteering = getSearchRequest(INDEX, STEERING_CODE, STEERING_FIELD);
-        multiSearchRequest.add(searchRequestSteering);
-        SearchRequest searchRequestFuel = getSearchRequest(INDEX, FUEL_CODE, FUEL_FIELD);
-        multiSearchRequest.add(searchRequestFuel);
-        SearchRequest searchRequestTransmission = getSearchRequest(INDEX, TRANSMISSION_CODE, TRANSMISSION_FIELD);
-        multiSearchRequest.add(searchRequestTransmission);
-        SearchRequest searchRequestCondition = getSearchRequest(INDEX, CONDITION_CODE, CONDITION_FIELD);
-        multiSearchRequest.add(searchRequestCondition);
-        SearchRequest searchRequestDrivetrain = getSearchRequest(INDEX, DRIVETRAIN_CODE, DRIVETRAIN_FIELD);
-        multiSearchRequest.add(searchRequestDrivetrain);
-        SearchRequest searchRequestLocation = getSearchRequest(INDEX, LOCATION_CODE, LOCATION_FIELD);
-        multiSearchRequest.add(searchRequestLocation);
-        SearchRequest searchRequestColor = getSearchRequest(INDEX, COLOR_CODE, COLOR_FIELD);
-        multiSearchRequest.add(searchRequestColor);
-        SearchRequest searchRequestVehicleType = getSearchRequest(INDEX, VEHICLE_TYPE_CODE, VEHICLE_TYPE_FIELD);
-        multiSearchRequest.add(searchRequestVehicleType);
-        SearchRequest searchRequestPassenger = getSearchRequest(INDEX, PASSENGER_CODE, PASSENGER_FIELD);
-        multiSearchRequest.add(searchRequestPassenger);
+        MultiSearchRequest multiSearchRequest = makeMultiSearchRequest();
 
         MultiSearchResponse searchResponse = rhlc.msearch(multiSearchRequest, RequestOptions.DEFAULT);
         MultiSearchResponse.Item[] responses = searchResponse.getResponses();
 
-        CodeSet codeSet = CodeSet.builder()
-                .maker(listCodes(responses[0], MAKER_CODE))
-                .subModel(listCodes(responses[1], SUB_MODEL_CODE))
-                .steering(listCodes(responses[2], STEERING_CODE))
-                .fuel(listCodes(responses[3], FUEL_CODE))
-                .transmission(listCodes(responses[4], TRANSMISSION_CODE))
-                .condition(listCodes(responses[5], CONDITION_CODE))
-                .drivetrain(listCodes(responses[6], DRIVETRAIN_CODE))
-                .location(listCodes(responses[7], LOCATION_CODE))
-                .color(listCodes(responses[8], COLOR_CODE))
-                .vehicleType(listCodes(responses[9], VEHICLE_TYPE_CODE))
+        ResultSet resultSet = ResultSet.builder()
+                .maker(listCodes(responses[Field.MAKER.ordinal()], Field.MAKER.getCode()))
+                .subModel(listCodes(responses[Field.SUB_MODEL.ordinal()], Field.SUB_MODEL.getCode()))
+                .steering(listCodes(responses[Field.STEERING.ordinal()], Field.STEERING.getCode()))
+                .fuel(listCodes(responses[Field.FUEL.ordinal()], Field.FUEL.getCode()))
+                .transmission(listCodes(responses[Field.TRANSMISSION.ordinal()], Field.TRANSMISSION.getCode()))
+                .condition(listCodes(responses[Field.CONDITION.ordinal()], Field.CONDITION.getCode()))
+                .drivetrain(listCodes(responses[Field.DRIVETRAIN.ordinal()], Field.DRIVETRAIN.getCode()))
+                .location(listCodes(responses[Field.LOCATION.ordinal()], Field.LOCATION.getCode()))
+                .color(listCodes(responses[Field.COLOR.ordinal()], Field.COLOR.getCode()))
+                .vehicleType(listCodes(responses[Field.VEHICLE_TYPE.ordinal()], Field.VEHICLE_TYPE.getCode()))
                 .build();
 
-        log.info("code set : {}", codeSet);
+        log.info("code set : {}", resultSet);
 
-        return codeSet;
+        return resultSet;
+    }
+
+    /**
+     * Multi Search 요청 파라미터를 생성한다.
+     *
+     * @return MultiSearchRequest
+     */
+    private MultiSearchRequest makeMultiSearchRequest() {
+        MultiSearchRequest multiSearchRequest = new MultiSearchRequest();
+
+        for (Field field : Field.values()) {
+            SearchRequest searchRequest = getSearchRequest(INDEX, field.getCode(), field.getName());
+            multiSearchRequest.add(searchRequest);
+        }
+
+        return multiSearchRequest;
     }
 
 
@@ -126,16 +93,20 @@ public class SearchService {
      * @param response 검색 결과 중 코드 집합 하나
      * @return 결과 코드 목록
      */
-    private List<Code> listCodes(MultiSearchResponse.Item response, String metaCode) {
+    private List<Result> listCodes(MultiSearchResponse.Item response, String metaCode) {
+        if (response == null) {
+            return Collections.emptyList();
+        }
+
         SearchResponse searchResponse = response.getResponse();
         Aggregations aggregations = searchResponse.getAggregations();
-        List<Code> codes = new ArrayList<>();
+        List<Result> results = new ArrayList<>();
         ParsedStringTerms terms = aggregations.get(metaCode);
         for (Terms.Bucket bucket : terms.getBuckets()) {
-            Code code = new Code(bucket.getKeyAsString(), "name_" + bucket.getKeyAsString(), bucket.getDocCount());
-            codes.add(code);
+            Result result = new Result(bucket.getKeyAsString(), "name_" + bucket.getKeyAsString(), bucket.getDocCount());
+            results.add(result);
         }
-        return codes;
+        return results;
     }
 
     /**
@@ -158,12 +129,12 @@ public class SearchService {
                 .must(QueryBuilders.termQuery("flag_del", "N"))
                 .must(QueryBuilders.termQuery("status_cd", "C030"));
 
-        if (!aggName.equals(COLOR_CODE)) {
-            query = query.must(QueryBuilders.termQuery("exterior_color_cd", "C180"));
+        if (!aggName.equals(Field.COLOR.getCode())) {
+            query = query.must(QueryBuilders.termQuery(Field.COLOR.getName(), "C180"));
         }
 
-        if (!aggName.equals(TRANSMISSION_CODE)) {
-            query = query.must(QueryBuilders.termQuery("transmission_cd", "C010"));
+        if (!aggName.equals(Field.TRANSMISSION.getCode())) {
+            query = query.must(QueryBuilders.termQuery(Field.TRANSMISSION.getName(), "C010"));
         }
 
         // .must(QueryStringQueryBuilder.parseInnerQueryBuilder(XContentBuilder.builder(XContent)))

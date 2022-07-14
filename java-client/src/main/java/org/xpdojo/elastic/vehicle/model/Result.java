@@ -5,7 +5,7 @@ import lombok.ToString;
 
 @ToString
 @Getter
-public class Code {
+public class Result {
 
     private String code;
 
@@ -13,7 +13,7 @@ public class Code {
 
     private long count;
 
-    public Code(String code, String name, long count) {
+    public Result(String code, String name, long count) {
         this.code = code;
         this.name = name;
         this.count = count;

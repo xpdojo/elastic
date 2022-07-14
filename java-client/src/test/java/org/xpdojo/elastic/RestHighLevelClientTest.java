@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.xpdojo.elastic.vehicle.SearchService;
-import org.xpdojo.elastic.vehicle.model.CodeSet;
+import org.xpdojo.elastic.vehicle.model.ResultSet;
 
 import java.io.IOException;
 import java.time.LocalTime;
@@ -26,12 +26,12 @@ class RestHighLevelClientTest {
     void multi_search() throws IOException {
         final LocalTime start = LocalTime.now();
 
-        CodeSet codeSet = searchService.search();
+        ResultSet resultSet = searchService.search();
 
         final LocalTime end = LocalTime.now();
         log.info("duration: {}", ChronoUnit.MILLIS.between(start, end));
 
-        assertThat(codeSet).isNotNull();
+        assertThat(resultSet).isNotNull();
     }
 
 }
