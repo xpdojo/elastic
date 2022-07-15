@@ -8,7 +8,7 @@ import org.xpdojo.elastic.vehicle.model.ResultSet;
 
 import java.io.IOException;
 
-@RequestMapping("/vehicle")
+@RequestMapping("/vehicles")
 @RestController
 public class SearchController {
 

@@ -19,8 +19,8 @@
 
     <properties>
         <java.version>1.8</java.version>
-        <!--https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/-->
-        <!--elasticsearch.version 프로퍼티는 Overriding 된다-->
+        <!-- https://docs.spring.io/spring-data/elasticsearch/docs/current/reference/html/ -->
+        <!-- elasticsearch.version 프로퍼티는 Overriding 된다 -->
         <es.version>4.4.1</es.version>
         <lombok.version>1.18.24</lombok.version>
         <assertj.version>3.23.1</assertj.version>
@@ -39,6 +39,10 @@
             <artifactId>spring-data-elasticsearch</artifactId>
             <version>${es.version}</version>
         </dependency>
+        <!--<dependency>-->
+        <!--    <groupId>org.springframework.boot</groupId>-->
+        <!--    <artifactId>spring-boot-starter-data-jpa</artifactId>-->
+        <!--</dependency>-->
 
         <!-- Lombok -->
         <dependency>

@@ -1,11 +1,11 @@
 elasticsearch:
-  host: 127.0.0.1
+  host: localhost
   port: 9200
-  index: movie
+  index: movies
 
-spring:
-  elasticsearch:
-    connection-timeout: 2s
+#spring:
+#  elasticsearch:
+#    connection-timeout: 2s
 
 logging:
   level:

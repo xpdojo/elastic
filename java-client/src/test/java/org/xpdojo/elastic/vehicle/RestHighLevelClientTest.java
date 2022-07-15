@@ -1,12 +1,10 @@
-package org.xpdojo.elastic;
+package org.xpdojo.elastic.vehicle;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import org.xpdojo.elastic.vehicle.SearchService;
-import org.xpdojo.elastic.vehicle.VehicleSearchConstraint;
 import org.xpdojo.elastic.vehicle.model.ResultSet;
 
 import java.io.IOException;

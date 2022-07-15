@@ -3,15 +3,18 @@ package org.xpdojo.elastic;
 import org.apache.http.HttpHost;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
-import org.elasticsearch.client.RestHighLevelClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.elasticsearch.client.ClientConfiguration;
+import org.springframework.data.elasticsearch.client.RestClients;
+import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfiguration;
+import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
 
 @Configuration
 // @EnableElasticsearchAuditing
-// @EnableElasticsearchRepositories
-public class ElasticConfig {
+@EnableElasticsearchRepositories
+public class ElasticConfig extends AbstractElasticsearchConfiguration {
 
     @Value("${elasticsearch.host}")
     private String host;
@@ -33,7 +36,12 @@ public class ElasticConfig {
     }
 
     @Bean
-    public RestHighLevelClient restHighLevelClient() {
-        return new RestHighLevelClientBuilder(restClient()).build();
+    @Override
+    public RestHighLevelClient elasticsearchClient() {
+        ClientConfiguration clientConfiguration = ClientConfiguration.builder()
+                .connectedTo(host + ":" + port)
+                .build();
+
+        return RestClients.create(clientConfiguration).rest();
     }
 }

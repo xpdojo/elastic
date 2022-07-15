@@ -1,7 +1,7 @@
 # Elasticsearch Java Client
 
 ```shell
-spring_profiles_active=production mvn clean spring-boot:run
+spring_profiles_active=local mvn clean spring-boot:run
 ```
 
 ```shell
