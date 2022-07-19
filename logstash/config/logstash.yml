@@ -1,0 +1,15 @@
+---
+## Default Logstash configuration from Logstash base image.
+## https://github.com/elastic/logstash/blob/master/docker/data/logstash/config/logstash-full.yml
+## https://www.elastic.co/guide/en/logstash/current/logstash-settings-file.html
+#
+http.host: "0.0.0.0"
+
+pipeline:
+  batch:
+    # The maximum number of events an individual worker thread will collect from inputs before attempting to execute its filters and outputs.
+    size: 125
+    # When creating pipeline event batches, how long in milliseconds to wait for each event before dispatching an undersized batch to pipeline workers.
+    delay: 50
+
+log.level: debug
