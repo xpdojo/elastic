@@ -1,3 +1,4 @@
 *.jar
 .env.production
 logstash.production.conf
+.idea/
