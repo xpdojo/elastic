@@ -1,4 +1,6 @@
-*.jar
-.env.production
-logstash.production.conf
+## JetBrains
 .idea/
+
+## Production
+*.jar
+production/

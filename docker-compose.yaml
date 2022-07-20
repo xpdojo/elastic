@@ -64,7 +64,7 @@ services:
       - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,Z
       - ./logstash/pipeline:/usr/share/logstash/pipeline:ro,Z
       # - ./logstash/scripts:/usr/share/logstash/scripts:ro,Z
-      # - ./logstash/ojdbc8-19.8.0.0.jar:/usr/share/logstash/logstash-core/lib/jars/ojdbc8-19.8.0.0.jar
+      # - ./production/ojdbc8-19.8.0.0.jar:/usr/share/logstash/logstash-core/lib/jars/ojdbc8-19.8.0.0.jar
     ports:
       - "5044:5044"
       - "50000:50000/tcp"
