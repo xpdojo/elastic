@@ -100,6 +100,7 @@ public class SearchService {
         List<Result> results = new ArrayList<>();
         Terms terms = aggregations.get(aggName);
         for (Terms.Bucket bucket : terms.getBuckets()) {
+            // log.info("bucket: {}", bucket.getAggregations().getAsMap());
             Result result = new Result(bucket.getKeyAsString(), "name_" + bucket.getKeyAsString(), bucket.getDocCount());
             results.add(result);
         }
@@ -182,10 +183,15 @@ public class SearchService {
 
         // .must(QueryStringQueryBuilder.parseInnerQueryBuilder(XContentBuilder.builder(XContent)))
 
+        // TopHitsAggregationBuilder topHits = new TopHitsAggregationBuilder("myTopHits");
+        // topHits.size(1);
+        // topHits.fetchSource(new String[]{"transmission_nm.en"}, null);
+
         AggregationBuilder aggs = AggregationBuilders
                 // .global("agg")
                 .terms(aggName)
                 .field(fieldName)
+                // .subAggregation(AggregationBuilders.topHits("myTopHits"))
                 .size(10_000) // 집계 결과가 10_000개까지 나올 수 없다는 것을 가정한다.
                 .order(BucketOrder.count(desc));
 
