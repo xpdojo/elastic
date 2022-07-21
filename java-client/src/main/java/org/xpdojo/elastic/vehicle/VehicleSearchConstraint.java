@@ -19,6 +19,7 @@ public class VehicleSearchConstraint {
     private String drivetrain;
     private String fuel;
     private String color;
+    private String option;
     private String passenger;
 
 }

@@ -13,7 +13,7 @@ public enum Field {
     DRIVETRAIN("PC0011", "drivetrain_cd"),
     FUEL("PC0012", "fuel_type_cd"),
     COLOR("PC0015", "exterior_color_cd"),
-    // OPTION("PC0021", "option_cd"),
+    OPTION("PC0021", "option_info.option_cd"),
     PASSENGER("passenger", "passenger");
 
     private String code;

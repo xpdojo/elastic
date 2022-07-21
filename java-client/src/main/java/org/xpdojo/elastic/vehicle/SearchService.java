@@ -58,6 +58,7 @@ public class SearchService {
                 .drivetrain(listCodes(responses[Field.DRIVETRAIN.ordinal()], Field.DRIVETRAIN.getCode()))
                 .location(listCodes(responses[Field.LOCATION.ordinal()], Field.LOCATION.getCode()))
                 .color(listCodes(responses[Field.COLOR.ordinal()], Field.COLOR.getCode()))
+                // .option(listCodes(responses[Field.OPTION.ordinal()], Field.OPTION.getCode()))
                 .vehicleType(listCodes(responses[Field.VEHICLE_TYPE.ordinal()], Field.VEHICLE_TYPE.getCode()))
                 .build();
     }
@@ -169,6 +170,11 @@ public class SearchService {
             query = query.must(QueryBuilders.termQuery(Field.COLOR.getName(), color));
         }
 
+        String option = constraint.getOption();
+        if (!aggName.equals(Field.OPTION.getCode()) && option != null) {
+            query = query.must(QueryBuilders.termQuery(Field.OPTION.getName(), option));
+        }
+
         String passenger = constraint.getPassenger();
         if (!aggName.equals(Field.PASSENGER.getCode()) && passenger != null) {
             query = query.must(QueryBuilders.termQuery(Field.PASSENGER.getName(), passenger));
@@ -180,7 +186,7 @@ public class SearchService {
                 // .global("agg")
                 .terms(aggName)
                 .field(fieldName)
-                .size(10_000)
+                .size(10_000) // 집계 결과가 10_000개까지 나올 수 없다는 것을 가정한다.
                 .order(BucketOrder.count(desc));
 
         SearchSourceBuilder searchSource = new SearchSourceBuilder()

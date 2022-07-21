@@ -19,5 +19,6 @@ public class ResultSet {
     List<Result> drivetrain;
     List<Result> location;
     List<Result> color;
+    // List<Result> option;
     List<Result> vehicleType;
 }
