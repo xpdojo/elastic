@@ -3,4 +3,8 @@
 
 ## Production
 *.jar
+
+## Production
+*prod*
+*production*
 production/
