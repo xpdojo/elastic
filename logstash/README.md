@@ -5,6 +5,7 @@
     - [Debian](#debian)
     - [RedHat](#redhat)
   - [Docker](#docker)
+  - [실행](#실행)
 
 ## Download
 
@@ -91,4 +92,11 @@ systemctl status logstash
 
 ```sh
 sudo docker-compose up
+```
+
+## 실행
+
+```sh
+# sudo /usr/share/logstash/bin/logstash -e 'input { stdin { } } output { stdout { } }'
+sudo /usr/share/logstash/bin/logstash -f pipeline/input-file.conf
 ```
