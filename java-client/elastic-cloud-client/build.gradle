@@ -1,0 +1,36 @@
+plugins {
+    id 'java'
+    id 'checkstyle'
+}
+
+// 현재 프로젝트(root)와 모든 하위 프로젝트에 적용한다.
+// https://docs.gradle.org/7.5.1/dsl/org.gradle.api.Project.html#org.gradle.api.Project:allprojects(groovy.lang.Closure)
+allprojects {
+    repositories {
+        mavenCentral()
+    }
+    group = 'org.xpdojo'
+}
+
+// 모든 하위 프로젝트에 적용한다.
+// https://docs.gradle.org/7.5.1/dsl/org.gradle.api.Project.html#org.gradle.api.Project:subprojects(groovy.lang.Closure)
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'checkstyle'
+
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    checkstyle {
+        configFile = file("${project.rootDir}/config/checkstyle/checkstyle.xml")
+        toolVersion = "9.3"
+        ignoreFailures = false
+        maxErrors = 0
+        maxWarnings = 0
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+}

@@ -1,0 +1,10 @@
+rootProject.name = 'elastic-cloud-client'
+
+// applications
+include ':demo'
+
+// modules
+include ':search:api-search'
+include ':search:api-aggregation'
+include ':search:infra-elasticsearch'
+

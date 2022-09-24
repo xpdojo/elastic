@@ -1,0 +1,26 @@
+logging:
+  level:
+    root: warn
+    org.xpdojo: debug
+    org.springframework:
+      web: debug
+      data:
+        elasticsearch:
+          core: debug
+          client.WIRE: trace
+    org.elasticsearch: debug
+
+spring:
+  elasticsearch:
+    connection-timeout: 2s
+
+  datasource:
+    url:
+      jdbc: h2:~/test;MODE=MySQL
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+elasticsearch:
+  cloud-id: cluster-name:base64-encoded-credentials
+  api-key: deployment-api-key

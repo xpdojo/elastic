@@ -1,0 +1,41 @@
+plugins {
+    id 'org.springframework.boot' version '2.7.3'
+    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+    id 'java'
+}
+
+version = '0.0.1-SNAPSHOT'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+dependencies {
+    // Modules
+    implementation project(':search:api-search')
+    implementation project(':search:api-aggregation')
+
+    // Web Application
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    runtimeOnly 'com.h2database:h2'
+
+    // Testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test.dependsOn(':search:api-search:test')
+test.dependsOn(':search:api-aggregation:test')
+
+def profile = "local"
+bootRun {
+    // args = ["--spring.profiles.active=" + profile]
+    environment("spring.profiles.active", profile)
+}
+
