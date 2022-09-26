@@ -4,10 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.ResourceNotFoundException;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
+import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHitSupport;
 import org.springframework.data.elasticsearch.core.SearchHits;
 import org.springframework.data.elasticsearch.core.SearchPage;
@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xpdojo.search.domain.Car;
 import org.xpdojo.search.domain.CarSearchRepository;
+
+import java.util.stream.Collectors;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -79,7 +81,11 @@ public class CarService {
 
         SearchHits<Car> hits = elasticsearchOperations.search(nativeSearchQuery, Car.class);
         SearchPage<Car> pages = SearchHitSupport.searchPageFor(hits, nativeSearchQuery.getPageable());
-        return (Page) SearchHitSupport.unwrapSearchHits(pages);
+
+        // return (Page) SearchHitSupport.unwrapSearchHits(pages);
+        return pages.getContent().stream()
+                .map(SearchHit::getContent)
+                .collect(Collectors.toList());
     }
 
 }
