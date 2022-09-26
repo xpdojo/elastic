@@ -18,6 +18,9 @@ dependencies {
     // Spring Web
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
+    // Data Source
+    implementation 'org.springframework.data:spring-data-elasticsearch:4.4.2'
+
     // Lombok
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

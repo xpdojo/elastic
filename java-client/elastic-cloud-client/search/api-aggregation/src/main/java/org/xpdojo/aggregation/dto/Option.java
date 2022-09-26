@@ -4,9 +4,9 @@ public class Option {
 
     private String id;
     private String name;
-    private Integer count;
+    private long count;
 
-    public Option(String id, String name, Integer count) {
+    public Option(String id, String name, long count) {
         this.id = id;
         this.name = name;
         this.count = count;
@@ -20,7 +20,7 @@ public class Option {
         return name;
     }
 
-    public Integer getCount() {
+    public long getCount() {
         return count;
     }
 }
