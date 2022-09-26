@@ -10,7 +10,7 @@ java -jar demo/build/libs/demo-0.0.1-SNAPSHOT.jar
 ## Local 환경에서 실행
 
 ```shell
-./gradlew clean :demo:bootRun
+./gradlew clean :demo:bootRun -P profile=dev
 ```
 
 ## Checkstyle

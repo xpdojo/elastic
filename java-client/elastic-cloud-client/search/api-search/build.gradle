@@ -38,5 +38,5 @@ jar {
     enabled = true
 }
 bootRun {
-    enabled = false
+    enabled = true
 }

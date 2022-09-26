@@ -1,8 +1,9 @@
 # https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4
 # http://honeymon.io/tech/2021/01/16/spring-boot-config-data-migration.html
-spring:
-  profiles:
-    active: dev
+# https://docs.spring.io/spring-boot/docs/2.7.4/gradle-plugin/reference/htmlsingle/#running-your-application.passing-arguments
+#spring:
+#  profiles:
+#    active: dev
 
 ---
 spring:

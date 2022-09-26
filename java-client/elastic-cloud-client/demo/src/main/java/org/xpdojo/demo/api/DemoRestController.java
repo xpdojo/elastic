@@ -1,11 +1,10 @@
 package org.xpdojo.demo.api;
 
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.xpdojo.search.domain.Car;
 import org.xpdojo.search.application.CarService;
+import org.xpdojo.search.domain.Car;
 
 @RestController
 public class DemoRestController {

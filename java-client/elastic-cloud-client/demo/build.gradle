@@ -33,10 +33,24 @@ dependencies {
 test.dependsOn(':search:api-search:test')
 test.dependsOn(':search:api-aggregation:test')
 
-// // java -jar build/libs/demo-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
-// def profile = "dev"
-// bootRun {
-//     // args = ["--spring.profiles.active=" + profile]
-//     environment("spring.profiles.active", profile)
-// }
+// https://docs.spring.io/spring-boot/docs/2.7.4/gradle-plugin/reference/htmlsingle/#running-your-application.passing-arguments
+// ./gradlew bootRun --args='--spring.profiles.active=dev'
+bootRun {
+    // java -jar demo/build/libs/demo-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
+    // args = ["--spring.profiles.active=" + profile]
 
+    // def profile = "dev"
+    // environment("spring.profiles.active", profile)
+
+    // https://docs.spring.io/spring-boot/docs/2.7.4/gradle-plugin/reference/htmlsingle/#running-your-application.passing-system-properties
+    // ./gradlew bootRun -P profile=dev
+    systemProperty("spring.profiles.active", findProperty("profile") ?: "default")
+    systemProperty("spring.output.ansi.enabled", "always") // coloring application output
+}
+
+bootJar {
+    enabled = true
+}
+jar {
+    enabled = false
+}
