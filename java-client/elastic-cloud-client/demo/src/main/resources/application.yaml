@@ -11,7 +11,7 @@ spring:
       public:
         - dev
         - debug
-        - es-dev
+        - elastic-dev
 
 ---
 spring:
