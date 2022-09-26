@@ -1,26 +1,29 @@
-logging:
-  level:
-    root: warn
-    org.xpdojo: debug
-    org.springframework:
-      web: debug
-      data:
-        elasticsearch:
-          core: debug
-          client.WIRE: trace
-    org.elasticsearch: debug
-
+# https://spring.io/blog/2020/08/14/config-file-processing-in-spring-boot-2-4
+# http://honeymon.io/tech/2021/01/16/spring-boot-config-data-migration.html
 spring:
-  elasticsearch:
-    connection-timeout: 2s
+  profiles:
+    active: dev
 
-  datasource:
-    url:
-      jdbc: h2:~/test;MODE=MySQL
-    username: sa
-    password:
-    driver-class-name: org.h2.Driver
+---
+spring:
+  profiles.group:
+      public:
+        - dev
+        - debug
+        - es-dev
 
-elasticsearch:
-  cloud-id: cluster-name:base64-encoded-credentials
-  api-key: deployment-api-key
+---
+spring:
+  profiles.group:
+      dev:
+        - dev
+        - debug
+        - elastic-prod
+
+---
+spring:
+  profiles.group:
+      prod:
+        - prod
+        - info
+        - elastic-prod

@@ -33,9 +33,10 @@ dependencies {
 test.dependsOn(':search:api-search:test')
 test.dependsOn(':search:api-aggregation:test')
 
-def profile = "local"
-bootRun {
-    // args = ["--spring.profiles.active=" + profile]
-    environment("spring.profiles.active", profile)
-}
+// // java -jar build/libs/demo-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev
+// def profile = "dev"
+// bootRun {
+//     // args = ["--spring.profiles.active=" + profile]
+//     environment("spring.profiles.active", profile)
+// }
 

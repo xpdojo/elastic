@@ -1,0 +1,5 @@
+spring.elasticsearch:
+    connection-timeout: 2s
+elasticsearch:
+  cloud-id: cluster-name:base64-encoded-credentials
+  api-key: deployment-api-key
