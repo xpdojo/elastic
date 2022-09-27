@@ -1,12 +1,19 @@
 package org.xpdojo.demo.api;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.xpdojo.aggregation.application.CountOptionsService;
-import org.xpdojo.aggregation.dto.Constraint;
+import org.xpdojo.aggregation.dto.Option;
+import org.xpdojo.demo.dto.SearchVehicleCriteria;
+import org.xpdojo.demo.dto.SearchVehicleRequestDto;
 import org.xpdojo.search.application.CarService;
 import org.xpdojo.search.domain.Car;
+
+import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 public class DemoRestController {
@@ -42,10 +49,9 @@ public class DemoRestController {
     }
 
     @GetMapping("/count")
-    public Constraint countOptions(
-            @RequestParam(value = "status", defaultValue = "C030") String status
-    ) {
-        return countOptionsService.aggregations(status);
+    public Map<String, List<Option>> countOptions(
+            @ModelAttribute @Valid SearchVehicleRequestDto searchVehicleRequestDto) {
+        return countOptionsService.aggregateVehicleOptions(new SearchVehicleCriteria(searchVehicleRequestDto));
     }
 
 }

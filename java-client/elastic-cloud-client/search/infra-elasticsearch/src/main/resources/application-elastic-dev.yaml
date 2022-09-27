@@ -3,3 +3,5 @@ spring.elasticsearch:
 elasticsearch:
   cloud-id: cluster-name:base64-encoded-credentials
   api-key: deployment-api-key
+  index:
+    vehicle: test-vehicle-car-2022.09.24

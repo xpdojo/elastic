@@ -1,26 +1,17 @@
 package org.xpdojo.aggregation.dto;
 
+import lombok.Getter;
+import lombok.ToString;
+
+@Getter
+@ToString
 public class Option {
 
-    private String id;
-    private String name;
+    private String code;
     private long count;
 
-    public Option(String id, String name, long count) {
-        this.id = id;
-        this.name = name;
+    public Option(String code, long count) {
+        this.code = code;
         this.count = count;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public long getCount() {
-        return count;
     }
 }
