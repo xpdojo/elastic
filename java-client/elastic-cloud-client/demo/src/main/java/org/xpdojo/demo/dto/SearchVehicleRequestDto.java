@@ -17,8 +17,10 @@ public class SearchVehicleRequestDto {
     @NullOrNotBlank private String hasYoutubeLink;
     @NullOrNotBlank private String isEvent;
     @NullOrNotBlank private String hasInsuranceHistory;
-    @NullOrNotBlank private String isFreshStock;
     @NullOrNotBlank private String photographedByWini;
+
+    @NullOrNotBlank private String hasFreshStockPermission;
+    @NullOrNotBlank private String isFreshStock;
 
     @NullOrNotBlank private String maker;
     @NullOrNotBlank private String subModel;
@@ -29,7 +31,7 @@ public class SearchVehicleRequestDto {
     @NullOrNotBlank private String vehicleType;
     @NullOrNotBlank private String drivetrain;
     @NullOrNotBlank private String fuel;
-    @NullOrNotBlank private String colors;
+    @NullOrNotBlank private String color;
     @NullOrNotBlank private String steering;
 
     @NullOrNotBlank private String priceFrom;

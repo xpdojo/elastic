@@ -8,7 +8,6 @@ import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.BoolQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.aggregations.Aggregation;
 import org.elasticsearch.search.aggregations.AggregationBuilders;
 import org.elasticsearch.search.aggregations.Aggregations;
@@ -22,19 +21,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.xpdojo.aggregation.dto.Option;
 import org.xpdojo.search.criteria.SearchCriteria;
+import org.xpdojo.search.criteria.VehicleBoolQueryBuilder;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static org.apache.logging.log4j.util.Strings.isNotBlank;
-import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 
 @Slf4j
 @Service
@@ -93,7 +87,7 @@ public class CountOptionsService {
                 .size(30) // Max: 2_147_483_647
                 .field(term.getValue());
 
-        BoolQueryBuilder boolQueryBuilder = generateBoolQueryBuilder(term.getValue(), criteria);
+        BoolQueryBuilder boolQueryBuilder = VehicleBoolQueryBuilder.generateOptionsQuery(term.getValue(), criteria);
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
                 .query(boolQueryBuilder)
@@ -108,57 +102,6 @@ public class CountOptionsService {
         log.debug("[msearch options] query {}", searchRequest.source());
 
         return searchRequest;
-    }
-
-    private BoolQueryBuilder generateBoolQueryBuilder(String keywordTerm, Map<String, String> criteria) {
-
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
-        if (criteria == null || criteria.isEmpty()) {
-            return boolQueryBuilder.must(matchAllQuery());
-        }
-
-        List<String> keys = Arrays.asList(
-                "offset", "size",
-                "product_price_from", "product_price_to",
-                "engine_volume_from", "engine_volume_to",
-                "model_year_from", "model_year_to"
-        );
-        criteria.entrySet().stream()
-                .filter(entry -> !keys.contains(entry.getKey()))
-                .filter(entry -> !entry.getKey().equals(keywordTerm.replace(".keyword", "")))
-                // .forEach(entry -> boolQueryBuilder.must(termQuery(entry.getKey() + ".keyword", entry.getValue())));
-                .forEach(entry ->
-                        boolQueryBuilder
-                                .must(
-                                        queryStringQuery(String.join(" OR ", entry.getValue().split(",")))
-                                                .field(entry.getKey())));
-
-        if (isNotBlank(criteria.get("product_price_from"))
-                || isNotBlank(criteria.get("product_price_to"))) {
-            boolQueryBuilder.must(
-                    rangeQuery("product_price")
-                            .gte(criteria.get("product_price_from"))
-                            .lte(criteria.get("product_price_to")));
-        }
-
-        if (isNotBlank(criteria.get("engine_volume_from"))
-                || isNotBlank(criteria.get("engine_volume_to"))) {
-            boolQueryBuilder.must(
-                    rangeQuery("engine_volume")
-                            .gte(criteria.get("engine_volume_from"))
-                            .lte(criteria.get("engine_volume_to")));
-        }
-
-        if (isNotBlank(criteria.get("model_year_from"))
-                || isNotBlank(criteria.get("model_year_to"))) {
-            boolQueryBuilder.must(
-                    rangeQuery("model_year")
-                            .gte(criteria.get("model_year_from"))
-                            .lte(criteria.get("model_year_to")));
-        }
-
-        return boolQueryBuilder;
     }
 
     /**

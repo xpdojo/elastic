@@ -18,8 +18,10 @@ public class SearchVehicleCriteria implements SearchCriteria {
     private String youtube_link;
     private String is_event;
     private String has_insurance_history;
-    private String is_fresh_stock;
     private String photographed_by_wini;
+
+    private String has_fresh_stock_permission;
+    private String is_fresh_stock;
 
     private String maker_code;
     private String sub_model_code;
@@ -52,8 +54,10 @@ public class SearchVehicleCriteria implements SearchCriteria {
         this.youtube_link = searchVehicleRequestDto.getHasYoutubeLink();
         this.is_event = searchVehicleRequestDto.getIsEvent();
         this.has_insurance_history = searchVehicleRequestDto.getHasInsuranceHistory();
-        this.is_fresh_stock = searchVehicleRequestDto.getIsFreshStock();
         this.photographed_by_wini = searchVehicleRequestDto.getPhotographedByWini();
+
+        this.has_fresh_stock_permission = searchVehicleRequestDto.getHasFreshStockPermission();
+        this.is_fresh_stock = searchVehicleRequestDto.getIsFreshStock();
 
         this.maker_code = searchVehicleRequestDto.getMaker();
         this.sub_model_code = searchVehicleRequestDto.getSubModel();
@@ -64,7 +68,7 @@ public class SearchVehicleCriteria implements SearchCriteria {
         this.vehicle_type_code = searchVehicleRequestDto.getVehicleType();
         this.drive_type_code = searchVehicleRequestDto.getDrivetrain();
         this.fuel_code = searchVehicleRequestDto.getFuel();
-        this.exterior_color_code = searchVehicleRequestDto.getColors();
+        this.exterior_color_code = searchVehicleRequestDto.getColor();
         this.steering_code = searchVehicleRequestDto.getSteering();
 
         this.product_price_from = searchVehicleRequestDto.getPriceFrom();
@@ -89,15 +93,14 @@ public class SearchVehicleCriteria implements SearchCriteria {
     @Override
     public Map<String, String> toTerms() {
         Map<String, String> terms = new HashMap<>();
-        terms.put("status", "status_code.keyword");
-        terms.put("is_deleted", "is_deleted.keyword");
-        terms.put("has_media", "has_media.keyword");
-        terms.put("is_guaranteed", "is_guaranteed.keyword");
-        terms.put("youtube_link", "youtube_link.keyword");
-        terms.put("is_event", "is_event.keyword");
-        terms.put("has_insurance_history", "has_insurance_history.keyword");
-        terms.put("is_fresh_stock", "is_fresh_stock.keyword");
-        terms.put("photographed_by_wini", "photographed_by_wini.keyword");
+        // terms.put("status", "status_code.keyword");
+        // terms.put("is_deleted", "is_deleted.keyword");
+        // terms.put("has_media", "has_media.keyword");
+        // terms.put("is_guaranteed", "is_guaranteed.keyword");
+        // terms.put("youtube_link", "youtube_link.keyword");
+        // terms.put("is_event", "is_event.keyword");
+        // terms.put("has_insurance_history", "has_insurance_history.keyword");
+        // terms.put("photographed_by_wini", "photographed_by_wini.keyword");
 
         terms.put("makers", "maker_code.keyword");
         terms.put("subModels", "sub_model_code.keyword");
