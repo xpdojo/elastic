@@ -33,8 +33,8 @@ import java.util.Map;
 
 import static org.apache.logging.log4j.util.Strings.isNotBlank;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 @Slf4j
 @Service
@@ -93,7 +93,7 @@ public class CountOptionsService {
                 .size(30) // Max: 2_147_483_647
                 .field(term.getValue());
 
-        BoolQueryBuilder boolQueryBuilder = generateBoolQueryBuilder(criteria);
+        BoolQueryBuilder boolQueryBuilder = generateBoolQueryBuilder(term.getValue(), criteria);
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
                 .query(boolQueryBuilder)
@@ -110,7 +110,7 @@ public class CountOptionsService {
         return searchRequest;
     }
 
-    private BoolQueryBuilder generateBoolQueryBuilder(Map<String, String> criteria) {
+    private BoolQueryBuilder generateBoolQueryBuilder(String keywordTerm, Map<String, String> criteria) {
 
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
@@ -126,7 +126,13 @@ public class CountOptionsService {
         );
         criteria.entrySet().stream()
                 .filter(entry -> !keys.contains(entry.getKey()))
-                .forEach(entry -> boolQueryBuilder.must(termQuery(entry.getKey() + ".keyword", entry.getValue())));
+                .filter(entry -> !entry.getKey().equals(keywordTerm.replace(".keyword", "")))
+                // .forEach(entry -> boolQueryBuilder.must(termQuery(entry.getKey() + ".keyword", entry.getValue())));
+                .forEach(entry ->
+                        boolQueryBuilder
+                                .must(
+                                        queryStringQuery(String.join(" OR ", entry.getValue().split(",")))
+                                                .field(entry.getKey())));
 
         if (isNotBlank(criteria.get("product_price_from"))
                 || isNotBlank(criteria.get("product_price_to"))) {

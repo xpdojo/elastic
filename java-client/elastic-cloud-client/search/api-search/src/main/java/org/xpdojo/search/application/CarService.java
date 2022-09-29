@@ -27,8 +27,8 @@ import java.util.stream.Collectors;
 
 import static org.apache.logging.log4j.util.Strings.isNotBlank;
 import static org.elasticsearch.index.query.QueryBuilders.matchAllQuery;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
-import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
 @Slf4j
 @Transactional(readOnly = true)
@@ -140,7 +140,12 @@ public class CarService {
         );
         criteria.entrySet().stream()
                 .filter(entry -> !keys.contains(entry.getKey()))
-                .forEach(entry -> boolQueryBuilder.must(termQuery(entry.getKey() + ".keyword", entry.getValue())));
+                // .forEach(entry -> boolQueryBuilder.must(termQuery(entry.getKey() + ".keyword", entry.getValue())));
+                .forEach(entry ->
+                        boolQueryBuilder
+                                .must(
+                                        queryStringQuery(String.join(" OR ", entry.getValue().split(",")))
+                                                .field(entry.getKey())));
 
         if (isNotBlank(criteria.get("product_price_from"))
                 || isNotBlank(criteria.get("product_price_to"))) {
