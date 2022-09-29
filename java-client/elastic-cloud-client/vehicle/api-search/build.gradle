@@ -13,13 +13,14 @@ configurations {
 }
 
 dependencies {
-    implementation project(':search:infra-elasticsearch')
+    implementation project(':vehicle:infra-elasticsearch')
 
-    // Spring Web
+    // Web Application
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     // Data Source
     implementation 'org.springframework.data:spring-data-elasticsearch:4.4.2'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'
@@ -37,5 +38,5 @@ jar {
     enabled = true
 }
 bootRun {
-    enabled = false
+    enabled = true
 }

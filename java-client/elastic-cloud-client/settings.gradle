@@ -4,7 +4,7 @@ rootProject.name = 'elastic-cloud-client'
 include ':demo'
 
 // modules
-include ':search:api-search'
-include ':search:api-aggregation'
-include ':search:infra-elasticsearch'
+include ':vehicle:api-search'
+include ':vehicle:api-aggregation'
+include ':vehicle:infra-elasticsearch'
 

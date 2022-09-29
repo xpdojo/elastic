@@ -44,7 +44,7 @@ resource "ec_deployment" "test-deployment" {
   region = local.region
 
   # https://www.elastic.co/guide/en/cloud/current/ec-regions-templates-instances.html
-  deployment_template_id = "aws-storage-optimized-v2"
+  #  deployment_template_id = "aws-storage-optimized-v2"
   # 60 GB storage | 2GB RAM | Up to 2.2 vCPU
   # Hourly rate $0.1556
 
@@ -52,9 +52,11 @@ resource "ec_deployment" "test-deployment" {
   # 20 GB storage | 2GB RAM | Up to 4.3 vCPU
   # Hourly rate $0.2020
 
-  # deployment_template_id = "aws-cpu-optimized-v3"
+  deployment_template_id = "aws-cpu-optimized-v3"
   # 24 GB storage | 2GB RAM | Up to 8.5 vCPU
   # Hourly rate $0.2732
+  # 96 GB storage | 8GB RAM | Up to 8.5 vCPU
+  # Hourly rate $1.0928
 
   traffic_filter = [
     ec_deployment_traffic_filter.test-filter.id
@@ -67,7 +69,7 @@ resource "ec_deployment" "test-deployment" {
       id         = "hot_content"
       zone_count = 2
 
-      size          = "2g"
+      size          = "8g"
       size_resource = "memory"
 
       node_type_data   = true

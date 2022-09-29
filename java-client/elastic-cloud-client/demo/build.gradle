@@ -14,9 +14,9 @@ configurations {
 
 dependencies {
     // Modules
-    implementation project(':search:api-search')
-    implementation project(':search:api-aggregation')
-    implementation project(':search:infra-elasticsearch')
+    implementation project(':vehicle:api-search')
+    implementation project(':vehicle:api-aggregation')
+    implementation project(':vehicle:infra-elasticsearch')
 
     // Web Application
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -32,8 +32,8 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
-test.dependsOn(':search:api-search:test')
-test.dependsOn(':search:api-aggregation:test')
+test.dependsOn(':vehicle:api-search:test')
+test.dependsOn(':vehicle:api-aggregation:test')
 
 // https://docs.spring.io/spring-boot/docs/2.7.4/gradle-plugin/reference/htmlsingle/#running-your-application.passing-arguments
 // ./gradlew bootRun --args='--spring.profiles.active=dev'
