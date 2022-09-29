@@ -39,16 +39,19 @@ public class DemoRestController {
         return carService.findAll(offset, size);
     }
 
-    @GetMapping("/vehicles")
-    public Iterable<Car> listVehicles(
-            @RequestParam(value = "offset", defaultValue = "0") int offset,
-            @RequestParam(value = "size", defaultValue = "30") int size,
-            @RequestParam(value = "status", defaultValue = "C030") String status
-    ) {
-        return carService.search(offset, size, status);
+    @GetMapping("/count")
+    public long countVehicles(
+            @ModelAttribute @Valid SearchVehicleRequestDto searchVehicleRequestDto) {
+        return carService.count(new SearchVehicleCriteria(searchVehicleRequestDto));
     }
 
-    @GetMapping("/count")
+    @GetMapping("/vehicles")
+    public Iterable<Car> listVehicles(
+            @ModelAttribute @Valid SearchVehicleRequestDto searchVehicleRequestDto) {
+        return carService.search(new SearchVehicleCriteria(searchVehicleRequestDto));
+    }
+
+    @GetMapping("/options")
     public Map<String, List<Option>> countOptions(
             @ModelAttribute @Valid SearchVehicleRequestDto searchVehicleRequestDto) {
         return countOptionsService.aggregateVehicleOptions(new SearchVehicleCriteria(searchVehicleRequestDto));

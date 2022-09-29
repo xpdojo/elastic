@@ -1,4 +1,4 @@
-package org.xpdojo.aggregation.dto;
+package org.xpdojo.search.criteria;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;

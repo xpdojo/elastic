@@ -22,6 +22,9 @@ public class ElasticConfig extends AbstractElasticsearchConfiguration {
     @Value("${elasticsearch.api-key}")
     private String apiKey;
 
+    // @Value("${elasticsearch.index.vehicle}")
+    // private String vehicleCarIndexName;
+
     /**
      * RestHighLevelClient가 deprecated 되었지만
      * Spring Data Elasticsearch가 아직 RestHighLevelClient를 사용한다.
@@ -33,4 +36,14 @@ public class ElasticConfig extends AbstractElasticsearchConfiguration {
         RestClientBuilder builder = RestClient.builder(cloudId).setDefaultHeaders(headers);
         return new RestHighLevelClient(builder);
     }
+
+    /**
+     * @Document(indexName = "#{@vehicleCarIndexName}")
+     * to
+     * @Document(indexName = "#{@environment.getProperty('elasticsearch.index.vehicle')}")
+     */
+    // @Bean
+    // public String vehicleCarIndexName() {
+    //     return vehicleCarIndexName;
+    // }
 }

@@ -16,6 +16,7 @@ dependencies {
     // Modules
     implementation project(':search:api-search')
     implementation project(':search:api-aggregation')
+    implementation project(':search:infra-elasticsearch')
 
     // Web Application
     implementation 'org.springframework.boot:spring-boot-starter-web'

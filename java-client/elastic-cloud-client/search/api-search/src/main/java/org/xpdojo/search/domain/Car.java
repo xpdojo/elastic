@@ -10,7 +10,11 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.util.Date;
 
-@Document(indexName = "test-vehicle-car-2022.09.24")
+/**
+ * 애플리케이션에서 RDB로 다시 조회하기 때문에 식별자(id)와 같이 확인해야 할 정보만 담는다.
+ */
+// @Document(indexName = "#{@vehicleCarIndexName}")
+@Document(indexName = "#{@environment.getProperty('elasticsearch.index.vehicle')}")
 @Entity
 @Getter
 public class Car {

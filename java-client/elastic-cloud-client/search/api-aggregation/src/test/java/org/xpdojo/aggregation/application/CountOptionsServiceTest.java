@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.xpdojo.aggregation.dto.Option;
-import org.xpdojo.aggregation.dto.SearchCriteria;
+import org.xpdojo.search.criteria.SearchCriteria;
 
 import java.util.HashMap;
 import java.util.List;
@@ -57,7 +57,7 @@ class CountOptionsServiceTest {
         Map<String, String> criteria = searchCriteria.toCriteria();
         assertThat(criteria).hasSize(3);
 
-        MultiSearchRequest multiSearchRequest = countOptionsService.multiSearchRequest(searchCriteria);
+        MultiSearchRequest multiSearchRequest = countOptionsService.generateMultiSearchRequest(searchCriteria);
         assertThat(multiSearchRequest.requests()).hasSize(2);
     }
 
