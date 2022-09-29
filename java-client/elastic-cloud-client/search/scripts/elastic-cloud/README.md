@@ -18,6 +18,7 @@ terraform validate
 ```
 
 ```sh
+# lock file을 기준으로 deployment를 구분한다. 
 terraform init -upgrade
 terraform apply -var-file="ec.tfvars" --auto-approve
 ```
