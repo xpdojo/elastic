@@ -1,4 +1,4 @@
-package org.xpdojo.aggregation.dto;
+package org.xpdojo.search.domain;
 
 import lombok.Getter;
 import lombok.ToString;

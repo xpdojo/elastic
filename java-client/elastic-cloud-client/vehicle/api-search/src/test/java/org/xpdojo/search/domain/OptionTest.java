@@ -1,4 +1,4 @@
-package org.xpdojo.aggregation.dto;
+package org.xpdojo.search.domain;
 
 import org.junit.jupiter.api.Test;
 
@@ -13,5 +13,4 @@ class OptionTest {
 
         assertEquals(expected, actual.getCount());
     }
-
 }

@@ -1,7 +1,10 @@
 plugins {
     id 'org.springframework.boot' version '2.7.3'
     id 'io.spring.dependency-management' version '1.0.13.RELEASE'
-    id 'java'
+    // https://docs.gradle.org/7.5.1/userguide/dependency_management_for_java_projects.html
+    // https://docs.gradle.org/7.5.1/userguide/java_library_plugin.html
+    // The `api` configuration should be used to declare dependencies which are exported by the library API,
+    id 'java-library'
 }
 
 version = '0.0.1-SNAPSHOT'
@@ -17,7 +20,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     // Spring Data Elasticsearch
-    implementation 'org.springframework.data:spring-data-elasticsearch:4.4.2'
+    api 'org.springframework.data:spring-data-elasticsearch:4.4.2'
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'

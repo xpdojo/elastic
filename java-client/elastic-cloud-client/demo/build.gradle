@@ -1,7 +1,6 @@
 plugins {
     id 'org.springframework.boot' version '2.7.3'
     id 'io.spring.dependency-management' version '1.0.13.RELEASE'
-    id 'java'
 }
 
 version = '0.0.1-SNAPSHOT'
@@ -15,8 +14,6 @@ configurations {
 dependencies {
     // Modules
     implementation project(':vehicle:api-search')
-    implementation project(':vehicle:api-aggregation')
-    implementation project(':vehicle:infra-elasticsearch')
 
     // Web Application
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -33,7 +30,6 @@ dependencies {
 }
 
 test.dependsOn(':vehicle:api-search:test')
-test.dependsOn(':vehicle:api-aggregation:test')
 
 // https://docs.spring.io/spring-boot/docs/2.7.4/gradle-plugin/reference/htmlsingle/#running-your-application.passing-arguments
 // ./gradlew bootRun --args='--spring.profiles.active=dev'

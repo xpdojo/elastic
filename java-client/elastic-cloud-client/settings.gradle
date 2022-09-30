@@ -5,6 +5,5 @@ include ':demo'
 
 // modules
 include ':vehicle:api-search'
-include ':vehicle:api-aggregation'
 include ':vehicle:infra-elasticsearch'
 

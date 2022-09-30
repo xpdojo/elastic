@@ -1,5 +1,15 @@
 # Demo project for Elastic Cloud Java Client
 
+## package structure
+
+```shell
+.
+├── app-demo
+└── vehicle
+    ├── api-search
+    └── infra-elasticsearch
+```
+
 ## jar 빌드 후 실행
 
 ```shell

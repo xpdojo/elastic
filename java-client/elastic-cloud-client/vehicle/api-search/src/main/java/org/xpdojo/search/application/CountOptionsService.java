@@ -1,4 +1,4 @@
-package org.xpdojo.aggregation.application;
+package org.xpdojo.search.application;
 
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.search.MultiSearchRequest;
@@ -19,9 +19,9 @@ import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilde
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.xpdojo.aggregation.dto.Option;
 import org.xpdojo.search.criteria.SearchCriteria;
 import org.xpdojo.search.criteria.VehicleBoolQueryBuilder;
+import org.xpdojo.search.domain.Option;
 
 import java.io.IOException;
 import java.util.ArrayList;

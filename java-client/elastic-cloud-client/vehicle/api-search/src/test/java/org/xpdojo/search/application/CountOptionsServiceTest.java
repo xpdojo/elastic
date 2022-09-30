@@ -1,4 +1,4 @@
-package org.xpdojo.aggregation.application;
+package org.xpdojo.search.application;
 
 import org.elasticsearch.action.search.MultiSearchRequest;
 import org.elasticsearch.action.search.MultiSearchResponse;
@@ -9,8 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.xpdojo.aggregation.dto.Option;
 import org.xpdojo.search.criteria.SearchCriteria;
+import org.xpdojo.search.domain.Option;
 
 import java.util.HashMap;
 import java.util.List;

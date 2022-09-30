@@ -21,6 +21,7 @@ public class SearchVehicleRequestDto {
 
     @NullOrNotBlank private String hasFreshStockPermission;
     @NullOrNotBlank private String isFreshStock;
+    @NullOrNotBlank private String inKorea;
 
     @NullOrNotBlank private String maker;
     @NullOrNotBlank private String subModel;
@@ -33,6 +34,8 @@ public class SearchVehicleRequestDto {
     @NullOrNotBlank private String fuel;
     @NullOrNotBlank private String color;
     @NullOrNotBlank private String steering;
+    @NullOrNotBlank private String conditions;
+    @NullOrNotBlank private String options;
 
     @NullOrNotBlank private String priceFrom;
     @NullOrNotBlank private String priceTo;
