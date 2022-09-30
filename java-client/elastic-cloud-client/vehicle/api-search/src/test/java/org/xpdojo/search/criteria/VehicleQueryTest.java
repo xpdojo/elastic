@@ -1,6 +1,7 @@
 package org.xpdojo.search.criteria;
 
 import org.elasticsearch.index.query.BoolQueryBuilder;
+import org.elasticsearch.index.query.ExistsQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryStringQueryBuilder;
 import org.elasticsearch.index.query.RangeQueryBuilder;
@@ -23,15 +24,14 @@ class VehicleQueryTest {
         List<QueryBuilder> must = boolQueryBuilder.must();
         assertThat(must)
                 .hasSize(3)
-                .hasExactlyElementsOfTypes(
-                        TermQueryBuilder.class,
-                        QueryStringQueryBuilder.class,
-                        RangeQueryBuilder.class
-                );
+                .hasAtLeastOneElementOfType(TermQueryBuilder.class)
+                .hasAtLeastOneElementOfType(QueryStringQueryBuilder.class)
+                .hasAtLeastOneElementOfType(RangeQueryBuilder.class)
+        ;
     }
 
     @Test
-    void build_query_with_parameter() {
+    void build_query_with_term_parameter() {
         SearchVehicleRequestDto searchVehicleRequestDto = new SearchVehicleRequestDto();
         searchVehicleRequestDto.setLocation("test-location");
 
@@ -40,15 +40,28 @@ class VehicleQueryTest {
 
         assertThat(boolQueryBuilder.hasClauses()).isTrue();
 
-        List<QueryBuilder> must = boolQueryBuilder.must();
-        assertThat(must)
+        assertThat(boolQueryBuilder.must())
                 .hasSize(4)
-                .hasExactlyElementsOfTypes(
-                        TermQueryBuilder.class,
-                        QueryStringQueryBuilder.class,
-                        QueryStringQueryBuilder.class,
-                        RangeQueryBuilder.class
-                );
+                .hasAtLeastOneElementOfType(TermQueryBuilder.class)
+                .hasAtLeastOneElementOfType(QueryStringQueryBuilder.class)
+                .hasAtLeastOneElementOfType(RangeQueryBuilder.class)
+        ;
+    }
+
+    @Test
+    void build_query_with_must_not_parameter() {
+        SearchVehicleRequestDto searchVehicleRequestDto = new SearchVehicleRequestDto();
+        searchVehicleRequestDto.setInKorea("yes");
+
+        SearchVehicleCriteria searchVehicleCriteria = new SearchVehicleCriteria(searchVehicleRequestDto);
+        BoolQueryBuilder boolQueryBuilder = VehicleQuery.build(searchVehicleCriteria);
+
+        assertThat(boolQueryBuilder.hasClauses()).isTrue();
+
+        assertThat(boolQueryBuilder.mustNot())
+                .hasSize(1)
+                .hasExactlyElementsOfTypes(ExistsQueryBuilder.class)
+        ;
     }
 
 }

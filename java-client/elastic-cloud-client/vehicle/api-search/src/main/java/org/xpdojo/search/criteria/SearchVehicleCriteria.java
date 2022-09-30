@@ -116,6 +116,7 @@ public class SearchVehicleCriteria implements SearchCriteria {
         terms.put("conditions", "condition_code.keyword");
 
         terms.put("passengers", "passenger");
+
         return terms;
     }
 
