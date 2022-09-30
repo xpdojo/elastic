@@ -1,4 +1,4 @@
-package org.xpdojo.demo.dto;
+package org.xpdojo.search.criteria;
 
 import org.junit.jupiter.api.Test;
 

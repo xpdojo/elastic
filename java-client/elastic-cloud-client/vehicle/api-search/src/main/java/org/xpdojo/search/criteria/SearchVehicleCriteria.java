@@ -1,11 +1,12 @@
-package org.xpdojo.demo.dto;
+package org.xpdojo.search.criteria;
 
 import lombok.Getter;
 import lombok.ToString;
 import org.xpdojo.search.application.CountOptionsService;
-import org.xpdojo.search.criteria.SearchCriteria;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Getter
@@ -116,5 +117,25 @@ public class SearchVehicleCriteria implements SearchCriteria {
 
         terms.put("passengers", "passenger");
         return terms;
+    }
+
+    /**
+     * Option 카운팅 시 msearch 에서 지정할 필드명
+     *
+     * @return 카운팅하는 Option Map<집계명, 집계할 필드명>
+     */
+    public List<String> getMustTermFields() {
+        return Arrays.asList(
+                "maker_code",
+                "sub_model_code",
+                "model_code",
+
+                "is_deleted",
+                "is_event",
+                "has_media",
+                "has_insurance_history",
+                "is_guaranteed",
+                "photographed_by_wini"
+        );
     }
 }

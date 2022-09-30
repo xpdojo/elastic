@@ -15,9 +15,9 @@ import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 import static org.elasticsearch.index.query.QueryBuilders.rangeQuery;
 import static org.elasticsearch.index.query.QueryBuilders.termQuery;
 
-public class VehicleBoolQueryBuilder {
+public class VehicleQuery {
 
-    protected VehicleBoolQueryBuilder() {
+    protected VehicleQuery() {
         throw new IllegalStateException("Utility class");
     }
 
@@ -27,34 +27,7 @@ public class VehicleBoolQueryBuilder {
      * @param criteria 검색 조건
      * @return 공통 쿼리
      */
-    public static BoolQueryBuilder generateVehicleQuery(Map<String, String> criteria) {
-        BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
-
-        if (criteria == null || criteria.isEmpty()) {
-            return boolQueryBuilder.must(matchAllQuery());
-        }
-
-        addMustTermQuery(boolQueryBuilder, criteria);
-
-        addMustQueryStringQuery(boolQueryBuilder, criteria);
-
-        addRangeQuery(boolQueryBuilder, criteria);
-
-        if (isNotBlank(criteria.get("external_company_code"))) {
-            addMustNotQuery(boolQueryBuilder, criteria);
-        }
-
-        return boolQueryBuilder;
-    }
-
-    /**
-     * 옵션 카운팅
-     *
-     * @param keywordTerm
-     * @param criteria
-     * @return
-     */
-    public static BoolQueryBuilder generateOptionsQuery(String keywordTerm, Map<String, String> criteria) {
+    public static BoolQueryBuilder generate(Map<String, String> criteria) {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
 
         if (criteria == null || criteria.isEmpty()) {

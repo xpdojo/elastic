@@ -1,9 +1,9 @@
-package org.xpdojo.demo.dto;
+package org.xpdojo.search.criteria;
 
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.xpdojo.demo.NullOrNotBlank;
+import org.xpdojo.validation.NullOrNotBlank;
 
 @Getter
 @Setter

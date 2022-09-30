@@ -15,7 +15,7 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilde
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.xpdojo.search.criteria.SearchCriteria;
-import org.xpdojo.search.criteria.VehicleBoolQueryBuilder;
+import org.xpdojo.search.criteria.VehicleQuery;
 import org.xpdojo.search.domain.Car;
 import org.xpdojo.search.domain.CarSearchRepository;
 
@@ -68,7 +68,7 @@ public class CarService {
 
         Map<String, String> criteria = searchCriteria.toCriteria();
 
-        BoolQueryBuilder boolQueryBuilder = VehicleBoolQueryBuilder.generateVehicleQuery(criteria);
+        BoolQueryBuilder boolQueryBuilder = VehicleQuery.generate(criteria);
         NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
                 .withQuery(boolQueryBuilder)
                 .build();
@@ -86,7 +86,7 @@ public class CarService {
 
         Map<String, String> criteria = searchCriteria.toCriteria();
 
-        BoolQueryBuilder boolQueryBuilder = VehicleBoolQueryBuilder.generateVehicleQuery(criteria);
+        BoolQueryBuilder boolQueryBuilder = VehicleQuery.generate(criteria);
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder);
 
         // 페이징 처리

@@ -3,7 +3,10 @@ rootProject.name = 'elastic-cloud-client'
 // applications
 include ':demo'
 
-// modules
+// validation
+include ':validation'
+
+// vehicle
 include ':vehicle:api-search'
 include ':vehicle:infra-elasticsearch'
 

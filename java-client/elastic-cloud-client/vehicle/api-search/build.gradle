@@ -12,6 +12,7 @@ configurations {
 }
 
 dependencies {
+    implementation project(':validation')
     implementation project(':vehicle:infra-elasticsearch')
 
     // Web Application

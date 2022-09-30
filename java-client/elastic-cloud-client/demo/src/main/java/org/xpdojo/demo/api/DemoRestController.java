@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.xpdojo.search.application.CountOptionsService;
 import org.xpdojo.search.domain.Option;
-import org.xpdojo.demo.dto.SearchVehicleCriteria;
-import org.xpdojo.demo.dto.SearchVehicleRequestDto;
+import org.xpdojo.search.criteria.SearchVehicleCriteria;
+import org.xpdojo.search.criteria.SearchVehicleRequestDto;
 import org.xpdojo.search.application.CarService;
 import org.xpdojo.search.domain.Car;
 

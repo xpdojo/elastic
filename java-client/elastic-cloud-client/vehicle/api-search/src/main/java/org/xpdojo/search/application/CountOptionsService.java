@@ -20,7 +20,7 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.xpdojo.search.criteria.SearchCriteria;
-import org.xpdojo.search.criteria.VehicleBoolQueryBuilder;
+import org.xpdojo.search.criteria.VehicleQuery;
 import org.xpdojo.search.domain.Option;
 
 import java.io.IOException;
@@ -87,7 +87,7 @@ public class CountOptionsService {
                 .size(30) // Max: 2_147_483_647
                 .field(term.getValue());
 
-        BoolQueryBuilder boolQueryBuilder = VehicleBoolQueryBuilder.generateOptionsQuery(term.getValue(), criteria);
+        BoolQueryBuilder boolQueryBuilder = VehicleQuery.generate(criteria);
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
                 .query(boolQueryBuilder)

@@ -1,4 +1,4 @@
-package org.xpdojo.demo;
+package org.xpdojo.validation;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
