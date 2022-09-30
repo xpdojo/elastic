@@ -14,12 +14,11 @@ import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.xpdojo.search.criteria.SearchCriteria;
+import org.xpdojo.search.criteria.SearchVehicleCriteria;
 import org.xpdojo.search.criteria.VehicleQuery;
 import org.xpdojo.search.domain.Car;
 import org.xpdojo.search.domain.CarSearchRepository;
 
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -61,14 +60,12 @@ public class CarService {
     /**
      * 상품 카운팅
      *
-     * @param searchCriteria
+     * @param searchVehicleCriteria
      * @return
      */
-    public long count(SearchCriteria searchCriteria) {
+    public long count(SearchVehicleCriteria searchVehicleCriteria) {
 
-        Map<String, String> criteria = searchCriteria.toCriteria();
-
-        BoolQueryBuilder boolQueryBuilder = VehicleQuery.generate(criteria);
+        BoolQueryBuilder boolQueryBuilder = VehicleQuery.build(searchVehicleCriteria);
         NativeSearchQuery nativeSearchQuery = new NativeSearchQueryBuilder()
                 .withQuery(boolQueryBuilder)
                 .build();
@@ -82,17 +79,15 @@ public class CarService {
     /**
      * Native Query를 사용한 상품 검색
      */
-    public Iterable<Car> search(SearchCriteria searchCriteria) {
+    public Iterable<Car> search(SearchVehicleCriteria searchVehicleCriteria) {
 
-        Map<String, String> criteria = searchCriteria.toCriteria();
-
-        BoolQueryBuilder boolQueryBuilder = VehicleQuery.generate(criteria);
+        BoolQueryBuilder boolQueryBuilder = VehicleQuery.build(searchVehicleCriteria);
         NativeSearchQueryBuilder nativeSearchQueryBuilder = new NativeSearchQueryBuilder().withQuery(boolQueryBuilder);
 
         // 페이징 처리
         PageRequest pageRequest = PageRequest.of(
-                criteria.get("offset") == null ? 0 : Integer.parseInt(criteria.get("offset")),
-                criteria.get("size") == null ? 30 : Integer.parseInt(criteria.get("size")),
+                searchVehicleCriteria.getOffset() == null ? 0 : Integer.parseInt(searchVehicleCriteria.getOffset()),
+                searchVehicleCriteria.getSize() == null ? 30 : Integer.parseInt(searchVehicleCriteria.getSize()),
                 Sort.by(
                         Sort.Order.desc("sort_point"),
                         Sort.Order.desc("@timestamp")

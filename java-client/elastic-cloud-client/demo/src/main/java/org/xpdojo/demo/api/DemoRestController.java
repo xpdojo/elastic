@@ -40,20 +40,17 @@ public class DemoRestController {
     }
 
     @GetMapping("/count")
-    public long countVehicles(
-            @ModelAttribute @Valid SearchVehicleRequestDto searchVehicleRequestDto) {
+    public long countVehicles(@ModelAttribute @Valid SearchVehicleRequestDto searchVehicleRequestDto) {
         return carService.count(new SearchVehicleCriteria(searchVehicleRequestDto));
     }
 
     @GetMapping("/vehicles")
-    public Iterable<Car> listVehicles(
-            @ModelAttribute @Valid SearchVehicleRequestDto searchVehicleRequestDto) {
+    public Iterable<Car> listVehicles(@ModelAttribute @Valid SearchVehicleRequestDto searchVehicleRequestDto) {
         return carService.search(new SearchVehicleCriteria(searchVehicleRequestDto));
     }
 
     @GetMapping("/options")
-    public Map<String, List<Option>> countOptions(
-            @ModelAttribute @Valid SearchVehicleRequestDto searchVehicleRequestDto) {
+    public Map<String, List<Option>> countOptions(@ModelAttribute @Valid SearchVehicleRequestDto searchVehicleRequestDto) {
         return countOptionsService.aggregateVehicleOptions(new SearchVehicleCriteria(searchVehicleRequestDto));
     }
 

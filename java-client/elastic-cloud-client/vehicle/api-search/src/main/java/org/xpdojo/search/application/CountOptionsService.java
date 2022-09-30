@@ -19,7 +19,7 @@ import org.elasticsearch.search.aggregations.bucket.terms.TermsAggregationBuilde
 import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.xpdojo.search.criteria.SearchCriteria;
+import org.xpdojo.search.criteria.SearchVehicleCriteria;
 import org.xpdojo.search.criteria.VehicleQuery;
 import org.xpdojo.search.domain.Option;
 
@@ -46,9 +46,9 @@ public class CountOptionsService {
     /**
      * Native Query를 사용한 검색
      */
-    public Map<String, List<Option>> aggregateVehicleOptions(SearchCriteria searchCriteria) {
+    public Map<String, List<Option>> aggregateVehicleOptions(SearchVehicleCriteria searchVehicleCriteria) {
 
-        MultiSearchRequest multiSearchRequest = generateMultiSearchRequest(searchCriteria);
+        MultiSearchRequest multiSearchRequest = generateMultiSearchRequest(searchVehicleCriteria);
 
         try {
             MultiSearchResponse msearch = client.msearch(multiSearchRequest, RequestOptions.DEFAULT);
@@ -63,31 +63,30 @@ public class CountOptionsService {
     /**
      * 집계할 데이터
      *
-     * @param searchCriteria 검색 조건
+     * @param searchVehicleCriteria 검색 조건
      * @return 집계 요청
      */
-    protected MultiSearchRequest generateMultiSearchRequest(SearchCriteria searchCriteria) {
+    protected MultiSearchRequest generateMultiSearchRequest(SearchVehicleCriteria searchVehicleCriteria) {
 
-        Map<String, String> terms = searchCriteria.toTerms();
-        Map<String, String> criteria = searchCriteria.toCriteria();
+        Map<String, String> terms = searchVehicleCriteria.toTerms();
 
         MultiSearchRequest multiSearchRequest = new MultiSearchRequest();
 
         for (Map.Entry<String, String> term : terms.entrySet()) {
-            SearchRequest searchRequest = generateSearchRequest(criteria, term);
+            SearchRequest searchRequest = generateSearchRequest(searchVehicleCriteria, term);
             multiSearchRequest.add(searchRequest);
         }
 
         return multiSearchRequest;
     }
 
-    private SearchRequest generateSearchRequest(Map<String, String> criteria, Map.Entry<String, String> term) {
+    private SearchRequest generateSearchRequest(SearchVehicleCriteria searchVehicleCriteria, Map.Entry<String, String> term) {
         TermsAggregationBuilder termsAggregationBuilder = AggregationBuilders
                 .terms(term.getKey())
                 .size(30) // Max: 2_147_483_647
                 .field(term.getValue());
 
-        BoolQueryBuilder boolQueryBuilder = VehicleQuery.generate(criteria);
+        BoolQueryBuilder boolQueryBuilder = VehicleQuery.build(searchVehicleCriteria);
 
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder()
                 .query(boolQueryBuilder)

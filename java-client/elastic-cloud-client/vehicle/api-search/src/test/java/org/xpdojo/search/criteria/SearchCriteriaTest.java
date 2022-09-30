@@ -18,7 +18,7 @@ class SearchCriteriaTest {
             }
 
             @Override
-            public Map<String, String> toCriteria() {
+            public Map<String, String> toMap() {
                 Map<String, String> criteria = new HashMap<>();
                 criteria.put("makers", "makers.keyword");
                 criteria.put("models", "models.keyword");
@@ -26,7 +26,7 @@ class SearchCriteriaTest {
             }
         };
 
-        Map<String, String> criteria = searchCriteria.toCriteria();
+        Map<String, String> criteria = searchCriteria.toMap();
         assertThat(criteria).hasSize(2);
     }
 

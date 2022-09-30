@@ -96,7 +96,7 @@ public class SearchVehicleCriteria implements SearchCriteria {
      * Option 카운팅 시 msearch 에서 지정할 필드명
      *
      * @return 카운팅하는 Option Map<집계명, 집계할 필드명>
-     * @see CountOptionsService#aggregateVehicleOptions(SearchCriteria)
+     * @see CountOptionsService#aggregateVehicleOptions(SearchVehicleCriteria)
      */
     @Override
     public Map<String, String> toTerms() {
@@ -120,11 +120,9 @@ public class SearchVehicleCriteria implements SearchCriteria {
     }
 
     /**
-     * Option 카운팅 시 msearch 에서 지정할 필드명
-     *
-     * @return 카운팅하는 Option Map<집계명, 집계할 필드명>
+     * @return 단일 선택 필드
      */
-    public List<String> getMustTermFields() {
+    public List<String> listMustTermFields() {
         return Arrays.asList(
                 "maker_code",
                 "sub_model_code",
@@ -136,6 +134,46 @@ public class SearchVehicleCriteria implements SearchCriteria {
                 "has_insurance_history",
                 "is_guaranteed",
                 "photographed_by_wini"
+        );
+    }
+
+    /**
+     * @return 다중 선택 필드
+     */
+    public List<String> listMustQueryStringFields() {
+        return Arrays.asList(
+                "transmission_code",
+                "location_code",
+                "vehicle_type_code",
+                "drive_type_code",
+                "fuel_code",
+                "exterior_color_code",
+                "steering_code",
+                "passenger",
+                "condition_code",
+                "options",
+
+                "status_code"
+        );
+    }
+
+    /**
+     * @return 범위 필드
+     */
+    public List<String> listMustRangeFields() {
+        return Arrays.asList(
+                "product_price",
+                "engine_volume",
+                "model_year"
+        );
+    }
+
+    /**
+     * @return 제외 필드
+     */
+    public List<String> listMustNotExistsFields() {
+        return Arrays.asList(
+                "external_company_code"
         );
     }
 }

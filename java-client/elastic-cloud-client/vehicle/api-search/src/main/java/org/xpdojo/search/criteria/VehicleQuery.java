@@ -3,8 +3,6 @@ package org.xpdojo.search.criteria;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 
 import static org.apache.logging.log4j.util.Strings.isBlank;
@@ -24,85 +22,45 @@ public class VehicleQuery {
     /**
      * 상품 검색 시 공통 쿼리 생성
      *
-     * @param criteria 검색 조건
+     * @param searchCriteria 검색 조건
      * @return 공통 쿼리
      */
-    public static BoolQueryBuilder generate(Map<String, String> criteria) {
+    public static BoolQueryBuilder build(SearchVehicleCriteria searchCriteria) {
         BoolQueryBuilder boolQueryBuilder = QueryBuilders.boolQuery();
+        Map<String, String> criteria = searchCriteria.toMap();
 
         if (criteria == null || criteria.isEmpty()) {
             return boolQueryBuilder.must(matchAllQuery());
         }
 
-        addMustTermQuery(boolQueryBuilder, criteria);
+        addMustTermQuery(boolQueryBuilder, searchCriteria);
 
-        addMustQueryStringQuery(boolQueryBuilder, criteria);
+        addMustQueryStringQuery(boolQueryBuilder, searchCriteria);
 
-        addRangeQuery(boolQueryBuilder, criteria);
+        addRangeQuery(boolQueryBuilder, searchCriteria);
 
         if (isNotBlank(criteria.get("external_company_code"))) {
-            addMustNotQuery(boolQueryBuilder, criteria);
+            addMustNotQuery(boolQueryBuilder, searchCriteria);
         }
 
         return boolQueryBuilder;
     }
 
-    /**
-     * 단일 선택 필드
-     *
-     * @param boolQueryBuilder
-     * @param criteria
-     * @return
-     */
-    private static BoolQueryBuilder addMustTermQuery(BoolQueryBuilder boolQueryBuilder, Map<String, String> criteria) {
+    private static BoolQueryBuilder addMustTermQuery(BoolQueryBuilder boolQueryBuilder, SearchVehicleCriteria searchVehicleCriteria) {
 
-        final List<String> mustTermFields = Arrays.asList(
-                "maker_code",
-                "sub_model_code",
-                "model_code",
-
-                "is_deleted",
-                "is_event",
-                "has_media",
-                "has_insurance_history",
-                "is_guaranteed",
-                "photographed_by_wini"
-        );
-
-        criteria.entrySet().stream()
-                .filter(entry -> mustTermFields.contains(entry.getKey()))
+        searchVehicleCriteria.toMap()
+                .entrySet().stream()
+                .filter(entry -> searchVehicleCriteria.listMustTermFields().contains(entry.getKey()))
                 .forEach(entry -> boolQueryBuilder.must(termQuery(entry.getKey() + ".keyword", entry.getValue())));
 
         return boolQueryBuilder;
     }
 
-    /**
-     * 다중 선택 필드
-     *
-     * @param boolQueryBuilder
-     * @param criteria
-     * @return
-     */
-    private static BoolQueryBuilder addMustQueryStringQuery(BoolQueryBuilder boolQueryBuilder, Map<String, String> criteria) {
+    private static BoolQueryBuilder addMustQueryStringQuery(BoolQueryBuilder boolQueryBuilder, SearchVehicleCriteria searchVehicleCriteria) {
 
-        final List<String> mustQueryStringFields = Arrays.asList(
-                "transmission_code",
-                "transmission_code",
-                "location_code",
-                "vehicle_type_code",
-                "drive_type_code",
-                "fuel_code",
-                "exterior_color_code",
-                "steering_code",
-                "passenger",
-                "condition_code",
-                "options",
-
-                "status_code"
-        );
-
-        criteria.entrySet().stream()
-                .filter(entry -> mustQueryStringFields.contains(entry.getKey()))
+        searchVehicleCriteria.toMap()
+                .entrySet().stream()
+                .filter(entry -> searchVehicleCriteria.listMustQueryStringFields().contains(entry.getKey()))
                 .forEach(entry ->
                         boolQueryBuilder
                                 .must(
@@ -116,10 +74,12 @@ public class VehicleQuery {
      * 범위 필드
      *
      * @param boolQueryBuilder
-     * @param criteria
+     * @param searchVehicleCriteria
      * @see <a href="https://www.elastic.co/guide/en/elasticsearch/reference/7.17/common-options.html#date-math">Date Math</a>
      */
-    private static BoolQueryBuilder addRangeQuery(BoolQueryBuilder boolQueryBuilder, Map<String, String> criteria) {
+    private static BoolQueryBuilder addRangeQuery(BoolQueryBuilder boolQueryBuilder, SearchVehicleCriteria searchVehicleCriteria) {
+
+        Map<String, String> criteria = searchVehicleCriteria.toMap();
 
         if (isNotBlank(criteria.get("has_fresh_stock_permission"))
                 && isNotBlank(criteria.get("is_fresh_stock"))) {
@@ -132,48 +92,23 @@ public class VehicleQuery {
                             .to("now-1d/s"));
         }
 
-        if (isNotBlank(criteria.get("product_price_from"))
-                || isNotBlank(criteria.get("product_price_to"))) {
-            boolQueryBuilder.must(
-                    rangeQuery("product_price")
-                            .from(criteria.get("product_price_from"))
-                            .to(criteria.get("product_price_to")));
-        }
-
-        if (isNotBlank(criteria.get("engine_volume_from"))
-                || isNotBlank(criteria.get("engine_volume_to"))) {
-            boolQueryBuilder.must(
-                    rangeQuery("engine_volume")
-                            .from(criteria.get("engine_volume_from"))
-                            .to(criteria.get("engine_volume_to")));
-        }
-
-        if (isNotBlank(criteria.get("model_year_from"))
-                || isNotBlank(criteria.get("model_year_to"))) {
-            boolQueryBuilder.must(
-                    rangeQuery("model_year")
-                            .from(criteria.get("model_year_from"))
-                            .to(criteria.get("model_year_to")));
-        }
+        searchVehicleCriteria
+                .listMustRangeFields().stream()
+                .filter(field -> isNotBlank(criteria.get(field + "_from")) || isNotBlank(criteria.get(field + "_to")))
+                .forEach(field -> boolQueryBuilder
+                        .must(
+                                rangeQuery(field)
+                                        .from(criteria.get(field + "_from"))
+                                        .to(criteria.get(field + "_to"))));
 
         return boolQueryBuilder;
     }
 
-    /**
-     * 제외 필드
-     *
-     * @param boolQueryBuilder
-     * @param criteria
-     * @return
-     */
-    private static BoolQueryBuilder addMustNotQuery(BoolQueryBuilder boolQueryBuilder, Map<String, String> criteria) {
+    private static BoolQueryBuilder addMustNotQuery(BoolQueryBuilder boolQueryBuilder, SearchVehicleCriteria searchVehicleCriteria) {
 
-        final List<String> mustNotExistsFields = Arrays.asList(
-                "external_company_code"
-        );
-
-        criteria.entrySet().stream()
-                .filter(entry -> mustNotExistsFields.contains(entry.getKey()))
+        searchVehicleCriteria.toMap()
+                .entrySet().stream()
+                .filter(entry -> searchVehicleCriteria.listMustNotExistsFields().contains(entry.getKey()))
                 .forEach(entry ->
                         boolQueryBuilder
                                 .mustNot(

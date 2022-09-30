@@ -15,7 +15,7 @@ public interface SearchCriteria {
                 .collect(Collectors.toMap(term -> term, term -> term + ".keyword"));
     }
 
-    default Map<String, String> toCriteria() {
+    default Map<String, String> toMap() {
         Field[] declaredFields = this.getClass().getDeclaredFields();
 
         return Arrays.stream(declaredFields)

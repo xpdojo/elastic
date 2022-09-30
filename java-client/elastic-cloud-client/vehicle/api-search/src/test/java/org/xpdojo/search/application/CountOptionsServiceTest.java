@@ -9,10 +9,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.util.ReflectionTestUtils;
-import org.xpdojo.search.criteria.SearchCriteria;
+import org.xpdojo.search.criteria.SearchVehicleCriteria;
+import org.xpdojo.search.criteria.SearchVehicleRequestDto;
 import org.xpdojo.search.domain.Option;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,30 +35,37 @@ class CountOptionsServiceTest {
 
     @Test
     void generate_multiSearchRequest() {
-        SearchCriteria searchCriteria = new SearchCriteria() {
-            @Override
-            public Map<String, String> toTerms() {
-                Map<String, String> terms = new HashMap<>();
-                terms.put("makers", "makers.keyword");
-                terms.put("models", "models.keyword");
-                return terms;
-            }
+        // SearchCriteria searchCriteria = new SearchCriteria() {
+        //     @Override
+        //     public Map<String, String> toTerms() {
+        //         Map<String, String> terms = new HashMap<>();
+        //         terms.put("makers", "makers.keyword");
+        //         terms.put("models", "models.keyword");
+        //         return terms;
+        //     }
+        //
+        //     @Override
+        //     public Map<String, String> toMap() {
+        //         Map<String, String> criteria = new HashMap<>();
+        //         criteria.put("makers", "maker1");
+        //         criteria.put("models", "model2");
+        //         criteria.put("colors", "black");
+        //         return criteria;
+        //     }
+        // };
 
-            @Override
-            public Map<String, String> toCriteria() {
-                Map<String, String> criteria = new HashMap<>();
-                criteria.put("makers", "maker1");
-                criteria.put("models", "model2");
-                criteria.put("colors", "black");
-                return criteria;
-            }
-        };
+        SearchVehicleRequestDto searchVehicleRequestDto = new SearchVehicleRequestDto();
+        searchVehicleRequestDto.setColor("test-color");
+        searchVehicleRequestDto.setTransmission("test-transmission");
+        searchVehicleRequestDto.setLocation("test-location");
 
-        Map<String, String> criteria = searchCriteria.toCriteria();
-        assertThat(criteria).hasSize(3);
+        SearchVehicleCriteria searchVehicleCriteria = new SearchVehicleCriteria(searchVehicleRequestDto);
 
-        MultiSearchRequest multiSearchRequest = countOptionsService.generateMultiSearchRequest(searchCriteria);
-        assertThat(multiSearchRequest.requests()).hasSize(2);
+        Map<String, String> criteria = searchVehicleCriteria.toMap();
+        assertThat(criteria).hasSize(5);
+
+        MultiSearchRequest multiSearchRequest = countOptionsService.generateMultiSearchRequest(searchVehicleCriteria);
+        assertThat(multiSearchRequest.requests()).hasSize(12);
     }
 
     @Test
