@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  logstash-vehicle-car:
+    image: docker.elastic.co/logstash/logstash:7.17.6
+    container_name: logstash-vehicle-car
+    environment:
+      - LS_JAVA_OPTS=-Xms1g -Xmx1g
+    # https://www.elastic.co/guide/en/logstash/7.17/config-setting-files.html
+    volumes:
+      # config
+      - ./config/pipelines.yml:/usr/share/logstash/config/pipelines.yml
+      - ./config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      # pipelines
+      - ./pipeline/input-jdbc-oracle.conf:/usr/share/logstash/pipeline/input-jdbc-oracle.conf
+      - ./scripts/vehicle.sql:/usr/share/logstash/pipeline/vehicle.sql
+      # plugins
+      - /usr/share/logstash/lib/ojdbc8.jar:/usr/share/logstash/lib/ojdbc8.jar
+      # metadata
+      - /usr/share/logstash/.meta/.dev-vehicle-car-last-run-metadata:/usr/share/logstash/.meta/.dev-vehicle-car-last-run-metadata
+    ports:
+      - 5044:5044

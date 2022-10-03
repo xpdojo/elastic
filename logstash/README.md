@@ -91,7 +91,25 @@ systemctl status logstash
 ## Docker
 
 ```sh
-sudo docker-compose up
+sudo docker run --rm docker.elastic.co/logstash/logstash:7.17.6 logstash -V
+```
+
+```sh
+# config
+sudo docker run --rm docker.elastic.co/logstash/logstash:7.17.6 ls /usr/share/logstash/config
+sudo docker run --rm docker.elastic.co/logstash/logstash:7.17.6 cat /usr/share/logstash/config/jvm.options > config/jvm.options.example
+sudo docker run --rm docker.elastic.co/logstash/logstash:7.17.6 cat /usr/share/logstash/config/log4j2.properties > config/log4j2.properties.example
+sudo docker run --rm docker.elastic.co/logstash/logstash:7.17.6 cat /usr/share/logstash/config/logstash-sample.conf > config/logstash-sample.conf.example
+sudo docker run --rm docker.elastic.co/logstash/logstash:7.17.6 cat /usr/share/logstash/config/logstash.yml > config/logstash.yml.example
+sudo docker run --rm docker.elastic.co/logstash/logstash:7.17.6 cat /usr/share/logstash/config/pipelines.yml > config/pipelines.yml.example
+sudo docker run --rm docker.elastic.co/logstash/logstash:7.17.6 cat /usr/share/logstash/config/startup.options > config/startup.options.example
+
+# pipeline
+sudo docker run --rm docker.elastic.co/logstash/logstash:7.17.6 cat /usr/share/logstash/pipeline/logstash.conf > pipeline/logstash.conf.example
+```
+
+```sh
+sudo docker compose up -d
 ```
 
 ## 실행
