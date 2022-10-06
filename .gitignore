@@ -8,3 +8,9 @@
 *prod*
 *production*
 production/
+
+## Python
+.pytest_cache
+.idea
+__pycache__
+
