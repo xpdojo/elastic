@@ -5,6 +5,7 @@
 *.jar
 
 ## Production
+*dev*
 *prod*
 *production*
 production/
