@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.7.3'
+    id 'org.springframework.boot' version '2.7.18'
     id 'io.spring.dependency-management' version '1.0.13.RELEASE'
     // https://docs.gradle.org/7.5.1/userguide/dependency_management_for_java_projects.html
     // https://docs.gradle.org/7.5.1/userguide/java_library_plugin.html
@@ -7,7 +7,7 @@ plugins {
     id 'java-library'
 }
 
-version = '0.0.1-SNAPSHOT'
+version = '0.1.0'
 
 configurations {
     compileOnly {
@@ -20,7 +20,16 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
     // Spring Data Elasticsearch
-    api 'org.springframework.data:spring-data-elasticsearch:4.4.2'
+    // api 'org.springframework.data:spring-data-elasticsearch:4.4.2'
+
+    // Elasticsearch
+    // https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/migrate-hlrc.html
+    // implementation 'co.elastic.clients:elasticsearch-java:8.11.3'
+    // implementation 'org.elasticsearch.client:elasticsearch-rest-high-level-client:7.17.4'
+
+    // Spring Data Elasticsearch
+    // spring-boot-starter-data-elasticsearch:2.7.2 -> spring-data-elasticsearch:4.4.2
+    api 'org.springframework.boot:spring-boot-starter-data-elasticsearch'
 
     // Lombok
     compileOnly 'org.projectlombok:lombok'

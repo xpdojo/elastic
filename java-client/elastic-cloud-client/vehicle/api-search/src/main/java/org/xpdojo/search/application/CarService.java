@@ -1,5 +1,6 @@
 package org.xpdojo.search.application;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.ResourceNotFoundException;
 import org.elasticsearch.index.query.BoolQueryBuilder;
@@ -25,18 +26,11 @@ import java.util.stream.Collectors;
 @Slf4j
 @Transactional(readOnly = true)
 @Service
+@RequiredArgsConstructor
 public class CarService {
 
     private final CarSearchRepository carSearchRepository;
     private final ElasticsearchOperations elasticsearchOperations;
-
-    public CarService(
-            CarSearchRepository carSearchRepository,
-            ElasticsearchOperations elasticsearchOperations
-    ) {
-        this.carSearchRepository = carSearchRepository;
-        this.elasticsearchOperations = elasticsearchOperations;
-    }
 
     public Car findById(String id) {
         return carSearchRepository.findById(id)

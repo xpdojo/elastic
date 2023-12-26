@@ -1,10 +1,14 @@
 package org.xpdojo.search.configs;
 
+import co.elastic.clients.elasticsearch.ElasticsearchClient;
+import co.elastic.clients.json.jackson.JacksonJsonpMapper;
+import co.elastic.clients.transport.ElasticsearchTransport;
+import co.elastic.clients.transport.rest_client.RestClientTransport;
 import org.apache.http.Header;
 import org.apache.http.message.BasicHeader;
 import org.elasticsearch.client.RestClient;
-import org.elasticsearch.client.RestClientBuilder;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.RestHighLevelClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,15 +27,27 @@ public class ElasticConfig extends AbstractElasticsearchConfiguration {
     private String apiKey;
 
     /**
-     * RestHighLevelClient가 deprecated 되었지만
-     * Spring Data Elasticsearch가 아직 RestHighLevelClient를 사용한다.
+     * TODO: RestHighLevelClient(HLRC)가 deprecated 되었고, ElasticsearchClient(EC)를 사용하라고 권장한다.
+     *
+     * @see <a href="https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/migrate-hlrc.html">Migrating from the High Level Rest Client</a>
      */
     @Bean
     @Override
     public RestHighLevelClient elasticsearchClient() {
-        final Header[] headers = new Header[]{new BasicHeader("Authorization", "ApiKey " + apiKey)};
-        RestClientBuilder builder = RestClient.builder(cloudId).setDefaultHeaders(headers);
-        return new RestHighLevelClient(builder);
+        // Create the low-level client
+        RestClient httpClient =
+                RestClient
+                        .builder(cloudId)
+                        .setDefaultHeaders(
+                                new Header[]{
+                                        new BasicHeader("Authorization", "ApiKey " + apiKey)
+                                }
+                        ).build();
+
+        // Create the HLRC
+        return new RestHighLevelClientBuilder(httpClient)
+                .setApiCompatibilityMode(true)
+                .build();
     }
 
 }

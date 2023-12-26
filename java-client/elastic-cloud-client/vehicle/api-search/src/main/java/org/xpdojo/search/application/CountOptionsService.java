@@ -34,7 +34,7 @@ import java.util.Map;
 @Service
 public class CountOptionsService {
 
-    @Value("${elasticsearch.index.vehicle}")
+    @Value("${elasticsearch.index.product.car}")
     private String INDEX;
 
     private final RestHighLevelClient client;

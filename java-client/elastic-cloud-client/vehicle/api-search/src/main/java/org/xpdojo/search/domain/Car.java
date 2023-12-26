@@ -14,7 +14,7 @@ import java.util.Date;
  * 애플리케이션에서 RDB로 다시 조회하기 때문에 식별자(id)와 같이 확인해야 할 정보만 담는다.
  */
 // @Document(indexName = "#{@vehicleCarIndexName}")
-@Document(indexName = "#{@environment.getProperty('elasticsearch.index.vehicle')}")
+@Document(indexName = "#{@environment.getProperty('elasticsearch.index.product.car')}")
 @Entity
 @Getter
 public class Car {
