@@ -8,12 +8,17 @@ import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.Criteria;
+import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
 
 import java.util.List;
 
 /**
  * JPA를 활용하기 힘든 복잡한 QueryDSL을 작성할 때 {@link ElasticsearchOperations}를 사용한다.
  * 동적 쿼리를 어떻게 작성해야 유지 보수 하기 좋을지 고민해야 한다.
+ *
+ * @see <a href="https://docs.spring.io/spring-data/elasticsearch/reference/elasticsearch/template.html#elasticsearch.operations.criteriaquery">Criteria Query</a>
+ * @see <a href="https://docs.spring.io/spring-data/elasticsearch/reference/elasticsearch/template.html#elasticsearch.operations.nativequery">Native Query</a>
  */
 @Slf4j
 @RequiredArgsConstructor
@@ -26,6 +31,29 @@ public class CustomCarSearchRepositoryImpl implements CustomCarSearchRepository 
     // ElasticsearchOperations Bean은 ElasticsearchClient를 사용한다.
     // ref: https://docs.spring.io/spring-data/elasticsearch/docs/5.1.2/reference/html/#elasticsearch-migration-guide-4.4-5.0.new-clients
     private final ElasticsearchOperations elasticsearchOperations;
+
+    @Override
+    public List<Car> findByPrice(
+            final int priceFrom,
+            final int priceTo,
+            final int offset,
+            final int size
+    ) {
+        CriteriaQuery query =
+                new CriteriaQuery(
+                        new Criteria("product_price")
+                                .greaterThanEqual(priceFrom)
+                                .lessThanEqual(priceTo))
+                        .setPageable(PageRequest.of(offset, size));
+
+        log.debug("query: {}", query.getCriteria());
+
+        SearchHits<Car> hits = elasticsearchOperations.search(query, Car.class);
+        List<SearchHit<Car>> searchHits = hits.getSearchHits();
+        return searchHits.stream()
+                .map(SearchHit::getContent)
+                .toList();
+    }
 
     @Override
     public List<Car> findByKeyword(
@@ -64,7 +92,7 @@ public class CustomCarSearchRepositoryImpl implements CustomCarSearchRepository 
         //         .build();
 
         // https://stackoverflow.com/a/76688038
-        // https://docs.spring.io/spring-data/elasticsearch/docs/5.1.2/reference/html/#elasticsearch-migration-guide-4.4-5.0.breaking-changes-packages
+        // https://docs.spring.io/spring-data/elasticsearch/docs/5.1.6/reference/html/#elasticsearch-migration-guide-4.4-5.0.breaking-changes-packages
         // spring-data-elasticsearch 4.4 -> 5.0로 변경되면서 NativeSearchQuery 대신 NativeQuery를 사용한다.
         // java.lang.IllegalArgumentException:
         // unhandled Query implementation org.springframework.data.elasticsearch.core.query.NativeSearchQuery
