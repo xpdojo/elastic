@@ -20,9 +20,12 @@ import java.util.Date;
  */
 @Getter
 // JPA에서 @Entity와 같은 역할
-@Document(indexName = "#{@environment.getProperty('elasticsearch.index.product.car')}")
+@Document(
+        indexName = "#{@environment.getProperty('elasticsearch.index.product.car')}",
+        createIndex = false
+)
 // Field가 추가되어도 무시하고 넘어감
-@JsonIgnoreProperties(ignoreUnknown=true)
+@JsonIgnoreProperties(ignoreUnknown = true)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Car {
 
