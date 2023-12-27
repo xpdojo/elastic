@@ -1,4 +1,4 @@
-rootProject.name = 'elastic-cloud-client'
+rootProject.name = 'spring-elastic-cloud-client-7.17'
 
 // applications
 include ':demo'
