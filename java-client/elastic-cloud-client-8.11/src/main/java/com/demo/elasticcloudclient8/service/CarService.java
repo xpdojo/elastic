@@ -7,6 +7,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class CarService {
@@ -16,7 +18,7 @@ public class CarService {
     /**
      * Elasticsearch Repository 사용한 검색
      */
-    public Iterable<Car> findAll(int offset, int size) {
+    public List<Car> findAll(int offset, int size) {
         PageRequest pageRequest = PageRequest.of(
                 offset,
                 size,
@@ -24,7 +26,20 @@ public class CarService {
                         Sort.Order.desc("sort_point"),
                         Sort.Order.desc("@timestamp")
                 ));
-        return carSearchRepository.findAll(pageRequest);
+        return carSearchRepository
+                .findAll(pageRequest)
+                .toList();
     }
 
+    /**
+     * Keyword 조건으로 ElasticsearchOperations 사용한 검색
+     */
+    public List<Car> findByKeyword(
+            String keyword,
+            int offset,
+            int size
+    ) {
+        return carSearchRepository
+                .findByKeyword(keyword, offset, size);
+    }
 }

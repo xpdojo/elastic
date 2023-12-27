@@ -1,4 +1,4 @@
-server.port: 23000
+server.port: 23345
 
 elasticsearch:
 #  host: something.es.region.aws.elastic-cloud.com
