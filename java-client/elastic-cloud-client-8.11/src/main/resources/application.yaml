@@ -1,0 +1,25 @@
+server.port: 23000
+
+elasticsearch:
+#  host: something.es.region.aws.elastic-cloud.com
+#  port: 1234
+#  api-key: YOUR_API_KEY
+#  index:
+#    product:
+#      car: PRODUCT_INDEX_NAME
+
+spring:
+  elasticsearch:
+    connection-timeout: 2s
+
+logging:
+  level:
+    root: warn
+    com.demo: debug
+    org.springframework:
+      web: debug
+      data:
+        elasticsearch:
+          core: debug
+          client.WIRE: trace
+    org.elasticsearch: debug
