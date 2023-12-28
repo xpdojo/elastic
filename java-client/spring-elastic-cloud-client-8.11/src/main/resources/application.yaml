@@ -1,12 +1,12 @@
 server.port: 23345
 
 elasticsearch:
-#  host: something.es.region.aws.elastic-cloud.com # 스킴은 빼고 적지만 https 연결 가능해야 함.
-#  port: 9243 # https://stackoverflow.com/a/53845543
-#  api-key: YOUR_API_KEY
-#  index:
-#    product:
-#      car: PRODUCT_INDEX_NAME
+  host: something.es.region.aws.elastic-cloud.com # 스킴은 빼고 적지만 https 연결 가능해야 함.
+  port: 9243 # https://stackoverflow.com/a/53845543
+  api-key: YOUR_API_KEY
+  index:
+    product:
+      car: PRODUCT_INDEX_NAME
 
 spring:
   elasticsearch:
